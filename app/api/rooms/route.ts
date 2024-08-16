@@ -1,7 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
+import { allRooms } from "@/backend/controllers/roomControllers";
+import { createEdgeRouter } from "next-connect";
+import { NextRequest } from "next/server";
 
-export async function GET(request: NextRequest) {
-    return NextResponse.json({
-        data: 'Hello from NextJS'
-    });
+interface RequestContext {
+    params: {
+        id: string;
+    }
 }
+
+const router = createEdgeRouter<NextRequest, RequestContext>();
+
+router.get(allRooms);
+
+export async function GET(request: NextRequest, ctx: RequestContext) {
+    return router.run(request, ctx);
+};
